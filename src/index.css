@@ -1,0 +1,536 @@
+@import "slack-blocks-to-jsx/dist/style.css";
+
+:root {
+  --slack-purple: #4a154b;
+  --slack-aubergine: #3f0e40;
+  --slack-active: #1164a3;
+  --slack-text: #1d1c1d;
+  --slack-border: #e2e8f0;
+  --bg-app: #f8fafc;
+  --bg-card: #ffffff;
+}
+
+[data-theme="dark"] {
+  --slack-text: #d1d2d3;
+  --slack-border: #38373a;
+  --bg-app: #1a1d21;
+  --bg-card: #222529;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: var(--bg-app);
+  color: var(--slack-text);
+  min-height: 100vh;
+}
+
+/* App Header */
+.app-header {
+  background: var(--slack-purple);
+  color: white;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.app-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Main Container */
+.container {
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+/* Nav Tabs */
+.tabs-nav {
+  display: flex;
+  gap: 8px;
+  border-bottom: 2px solid var(--slack-border);
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: var(--slack-active);
+  background: rgba(17, 100, 163, 0.05);
+}
+
+.tab-btn.active {
+  color: var(--slack-active);
+  background: rgba(17, 100, 163, 0.08);
+}
+
+.tab-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--slack-active);
+}
+
+/* Info Banner */
+.info-banner {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+[data-theme="dark"] .info-banner {
+  background: #064e3b33;
+  border-color: #065f46;
+  color: #6ee7b7;
+}
+
+.lan-pill {
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Dynamic Editor Layout with Collapsible JSON Panel */
+.editor-layout {
+  display: grid;
+  gap: 20px;
+  transition: all 0.25s ease-in-out;
+}
+
+.editor-layout.with-json {
+  grid-template-columns: 460px 1fr;
+}
+
+.editor-layout.without-json {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 1100px) {
+  .editor-layout.with-json {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Styling */
+.panel-card {
+  background: var(--bg-card);
+  border: 1px solid var(--slack-border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid var(--slack-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+}
+
+.panel-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-body {
+  padding: 20px;
+  overflow-x: auto;
+}
+
+/* Make Slack Message width expand fully when JSON panel is hidden */
+.slack-message-container {
+  background: var(--bg-card);
+  border-radius: 8px;
+}
+
+.slack-message-container .slack_blocks_to_jsx {
+  max-width: 100% !important;
+}
+
+/* Multi-column layout responsive behavior */
+.slack_blocks_to_jsx__layout_row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* 読みやすいカード最小幅（約260px）を設定し、幅に応じて 3列 → 2列 → 1列 に自然に折り返す */
+.slack_blocks_to_jsx__layout_item {
+  display: flex;
+  flex-direction: column;
+  min-width: 260px !important;
+  flex: 1 1 260px !important;
+}
+
+.slack_blocks_to_jsx__layout_item .slack_blocks_to_jsx__card {
+  height: 100%;
+}
+
+/* レスポンシブ OFF モード: 画面が狭くなっても絶対に折り返さず 3列/2列 を横並び固定 */
+.responsive-off .slack_blocks_to_jsx__layout_row {
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.responsive-off .slack_blocks_to_jsx__layout_item {
+  flex: 0 0 280px !important;
+  min-width: 280px !important;
+}
+
+/* Editor textarea */
+.json-editor {
+  width: 100%;
+  height: 520px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.825rem;
+  padding: 14px;
+  border: 1px solid var(--slack-border);
+  border-radius: 6px;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  line-height: 1.5;
+  resize: vertical;
+  tab-size: 2;
+}
+
+.json-editor:focus {
+  outline: 2px solid var(--slack-active);
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: #334155;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: #475569;
+}
+
+.btn-toggle-json {
+  background: rgba(17, 100, 163, 0.08);
+  border: 1px solid rgba(17, 100, 163, 0.25);
+  color: var(--slack-active);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-toggle-json:hover {
+  background: rgba(17, 100, 163, 0.16);
+}
+
+.error-badge {
+  background: #fee2e2;
+  border: 1px solid #f87171;
+  color: #b91c1c;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  margin-top: 10px;
+  font-family: monospace;
+}
+
+/* Comparison Layout (Before vs After) */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 960px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.comparison-card {
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 2px solid var(--slack-border);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.comparison-card.bad {
+  border-color: #f87171;
+}
+
+.comparison-card.good {
+  border-color: #34d399;
+}
+
+.comparison-header {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.comparison-header.bad {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+[data-theme="dark"] .comparison-header.bad {
+  background: #450a0a;
+  color: #fca5a5;
+}
+
+.comparison-header.good {
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+[data-theme="dark"] .comparison-header.good {
+  background: #064e3b;
+  color: #6ee7b7;
+}
+
+.principles-box {
+  background: var(--bg-card);
+  border: 1px solid var(--slack-border);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+
+.principles-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.principle-item {
+  background: rgba(0, 0, 0, 0.02);
+  border-left: 4px solid var(--slack-active);
+  padding: 12px 16px;
+  border-radius: 0 8px 8px 0;
+}
+
+[data-theme="dark"] .principle-item {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.principle-head {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  color: var(--slack-active);
+}
+
+.principle-desc {
+  font-size: 0.825rem;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+/* =========================================================================
+   Single Block Catalog Styles
+   ========================================================================= */
+.catalog-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.catalog-item-card {
+  background: var(--bg-card);
+  border: 1px solid var(--slack-border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.catalog-item-header {
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid var(--slack-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.catalog-item-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.catalog-item-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--slack-text);
+}
+
+.catalog-item-tag {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-weight: 600;
+  background: rgba(17, 100, 163, 0.1);
+  color: var(--slack-active);
+}
+
+.catalog-item-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--slack-border);
+}
+
+@media (max-width: 960px) {
+  .catalog-item-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.catalog-item-specs {
+  padding: 18px;
+  border-right: 1px solid var(--slack-border);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  background: rgba(0, 0, 0, 0.01);
+}
+
+@media (max-width: 960px) {
+  .catalog-item-specs {
+    border-right: none;
+    border-bottom: 1px solid var(--slack-border);
+  }
+}
+
+.catalog-item-render {
+  padding: 20px;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+}
